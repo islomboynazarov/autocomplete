@@ -1,11 +1,12 @@
 function createAutoComplete(data) {
-  const sorted = [...data].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
+  const sorted = [...data].sort();
 
   function findLeft(prefix) {
+    const lower = prefix.toLowerCase();
     let left = 0, right = sorted.length - 1, result = sorted.length;
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
-      if (sorted[mid].toLowerCase() >= prefix.toLowerCase()) {
+      if (sorted[mid].toLowerCase() >= lower) {
         result = mid;
         right = mid - 1;
       } else {
