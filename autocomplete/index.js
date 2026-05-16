@@ -1,11 +1,11 @@
 function createAutoComplete(data) {
-  const sorted = [...data].sort();
+  const sorted = [...data].sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
 
   function findLeft(prefix) {
     let left = 0, right = sorted.length - 1, result = sorted.length;
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
-      if (sorted[mid] >= prefix) {
+      if (sorted[mid].toLowerCase() >= prefix.toLowerCase()) {
         result = mid;
         right = mid - 1;
       } else {
@@ -16,11 +16,11 @@ function createAutoComplete(data) {
   }
 
   function findRight(prefix) {
-    const upper = prefix + '\uffff';
+    const upper = prefix.toLowerCase() + '\uffff';
     let left = 0, right = sorted.length - 1, result = -1;
     while (left <= right) {
       const mid = Math.floor((left + right) / 2);
-      if (sorted[mid] <= upper) {
+      if (sorted[mid].toLowerCase() <= upper) {
         result = mid;
         left = mid + 1;
       } else {
@@ -31,7 +31,7 @@ function createAutoComplete(data) {
   }
 
   return function(prefix) {
-    if (!prefix) return [...sorted];
+    if (!prefix) return [];
     const left = findLeft(prefix);
     const right = findRight(prefix);
     if (left > right) return [];
